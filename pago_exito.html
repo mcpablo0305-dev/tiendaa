@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Pedido · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap narrow center">
+    {% if paid %}
+      <h1 class="page-title">¡Gracias por tu compra!</h1>
+      <p class="lead dark">Tu pedido #{{ order['id'] }} fue pagado correctamente.</p>
+    {% else %}
+      <h1 class="page-title">Pedido recibido</h1>
+      <p class="lead dark">Estamos confirmando tu pago del pedido #{{ order['id'] }}. Si no cambia a "Pagado" en unos minutos, escríbenos.</p>
+    {% endif %}
+    <div class="hero-cta center">
+      <a class="btn" href="{{ url_for('cuenta') }}">Ver mis pedidos</a>
+      <a class="btn btn-ghost" href="{{ wa_order }}" target="_blank" rel="noopener">Contactar por WhatsApp</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

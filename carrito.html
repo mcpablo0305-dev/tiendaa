@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Carrito · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap">
+    <h1 class="page-title">Tu carrito</h1>
+    {% if not items %}
+      <div class="empty">
+        <p>Tu carrito está vacío.</p>
+        <a class="btn" href="{{ url_for('tienda') }}">Ir a la tienda</a>
+      </div>
+    {% else %}
+    <div class="cart-grid">
+      <div class="cart-list">
+        {% for it in items %}
+        <div class="cart-row">
+          <div class="tub mini" style="--tub: {{ it.p['color'] }}"><div class="tub-lid"></div><div class="tub-body"></div></div>
+          <div class="cart-name">
+            <a href="{{ url_for('producto', slug=it.p['slug']) }}">{{ it.p['name'] }}</a>
+            <span class="muted">{{ it.p['price_cents'] | money }} c/u</span>
+          </div>
+          <form method="post" action="{{ url_for('carrito_actualizar') }}" class="cart-qty">
+            <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+            <input type="hidden" name="product_id" value="{{ it.p['id'] }}">
+            <input type="number" name="qty" min="0" max="10" value="{{ it.qty }}" aria-label="Cantidad">
+            <button class="link-btn" type="submit">Actualizar</button>
+          </form>
+          <strong>{{ it.line | money }}</strong>
+        </div>
+        {% endfor %}
+      </div>
+      <aside class="summary">
+        <h3>Resumen</h3>
+        <div class="line"><span>Subtotal</span><span>{{ subtotal | money }}</span></div>
+        <div class="line"><span>Envío</span><span>{{ 'Gratis' if ship == 0 else (ship | money) }}</span></div>
+        <div class="line total"><span>Total</span><span>{{ total | money }}</span></div>
+        {% if not user %}
+          <p class="muted small">Necesitas una cuenta para pagar.</p>
+          <a class="btn btn-block" href="{{ url_for('login', next='/carrito') }}">Iniciar sesión para pagar</a>
+          <a class="btn btn-ghost btn-block" href="{{ url_for('registro', next='/carrito') }}">Crear cuenta</a>
+        {% else %}
+          <form method="post" action="{{ url_for('checkout') }}">
+            <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+            <button class="btn btn-block" type="submit">Pagar con tarjeta</button>
+          </form>
+          {% if not stripe_ready %}
+            <p class="muted small">Modo configuración: el pago con tarjeta se activa al agregar tu llave de Stripe.</p>
+          {% endif %}
+        {% endif %}
+        <a class="btn btn-ghost btn-block" href="{{ wa_link }}" target="_blank" rel="noopener">¿Dudas? Escríbenos</a>
+      </aside>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

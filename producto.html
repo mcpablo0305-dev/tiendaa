@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ p['name'] }} · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap detail">
+    <div class="detail-art">
+      <div class="tub big" style="--tub: {{ p['color'] }}">
+        <div class="tub-lid"></div><div class="tub-body"><span>{{ p['name'] }}</span></div>
+      </div>
+    </div>
+    <div class="detail-info">
+      <a class="link-arrow" href="{{ url_for('tienda', cat=p['category']) }}">← {{ p['category'] }}</a>
+      <h1>{{ p['name'] }}</h1>
+      <p class="lead dark">{{ p['tagline'] }}</p>
+      <div class="price big-price">{{ p['price_cents'] | money }}</div>
+      <p>{{ p['description'] }}</p>
+      {% if p['stock'] > 0 %}
+      <form method="post" action="{{ url_for('carrito_agregar') }}" class="buy">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="product_id" value="{{ p['id'] }}">
+        <label class="qty">Cantidad
+          <select name="qty">{% for n in range(1, 6) %}<option>{{ n }}</option>{% endfor %}</select>
+        </label>
+        <button class="btn" type="submit">Agregar al carrito</button>
+      </form>
+      {% else %}
+        <p class="flash error">Agotado por el momento.</p>
+      {% endif %}
+      <a class="btn btn-ghost" href="{{ wa_product }}" target="_blank" rel="noopener">Preguntar por WhatsApp</a>
+      <ul class="ticks">
+        <li>Pago seguro con tarjeta</li>
+        <li>Envío gratis desde {{ free_from | money }}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Mi cuenta · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap narrow">
+    <h1 class="page-title">Mi cuenta</h1>
+    <p class="muted">{{ user['name'] }} · {{ user['email'] }}</p>
+    <h2 class="h2">Mis pedidos</h2>
+    {% if not orders %}
+      <div class="empty"><p>Aún no tienes pedidos.</p><a class="btn" href="{{ url_for('tienda') }}">Ir a la tienda</a></div>
+    {% else %}
+      {% for o in orders %}
+      <div class="order">
+        <div class="order-head">
+          <strong>Pedido #{{ o['id'] }}</strong>
+          <span class="status {{ o['status'] }}">{{ o['status'] | capitalize }}</span>
+          <span class="muted">{{ o['created_at'][:10] }}</span>
+          <strong>{{ o['total_cents'] | money }}</strong>
+        </div>
+        <ul>
+          {% for it in detail[o['id']] %}
+            <li>{{ it['qty'] }} × {{ it['name'] }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

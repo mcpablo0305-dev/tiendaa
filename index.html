@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="wrap hero-in">
+    <div>
+      <span class="eyebrow">Suplementación deportiva</span>
+      <h1>Entrena.<br>Recupera.<br><em>Repite.</em></h1>
+      <p class="lead">Fórmulas limpias para tu rendimiento. Sin vueltas, sin ingredientes de relleno.</p>
+      <div class="hero-cta">
+        <a class="btn" href="{{ url_for('tienda') }}">Ver tienda</a>
+        <a class="btn btn-ghost-light" href="{{ wa_link }}" target="_blank" rel="noopener">Hablar por WhatsApp</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="tub big" style="--tub:#1a1a1a"><div class="tub-lid"></div><div class="tub-body"><span>Whey<br>Isolate</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap strip-in">
+    <div><strong>Envío a todo México</strong><span>Gratis desde {{ free_from | money }}</span></div>
+    <div><strong>Pago seguro</strong><span>Tarjeta de crédito o débito</span></div>
+    <div><strong>Asesoría directa</strong><span>Escríbenos por WhatsApp</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Los más vendidos</h2>
+      <a href="{{ url_for('tienda') }}" class="link-arrow">Ver todo →</a>
+    </div>
+    <div class="grid">
+      {% for p in featured %}{% include "_card.html" %}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap cta-in">
+    <h2>¿No sabes por dónde empezar?</h2>
+    <p>Cuéntame tu objetivo y te recomiendo una combinación para tu rutina.</p>
+    <a class="btn" href="{{ wa_link }}" target="_blank" rel="noopener">Chatear ahora</a>
+  </div>
+</section>
+{% endblock %}

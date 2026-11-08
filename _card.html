@@ -1,0 +1,22 @@
+<article class="card">
+  <a href="{{ url_for('producto', slug=p['slug']) }}" class="tub-link" aria-label="{{ p['name'] }}">
+    <div class="tub" style="--tub: {{ p['color'] }}">
+      <div class="tub-lid"></div>
+      <div class="tub-body"><span>{{ p['name'] }}</span></div>
+    </div>
+  </a>
+  <div class="card-body">
+    <span class="cat">{{ p['category'] }}</span>
+    <h3><a href="{{ url_for('producto', slug=p['slug']) }}">{{ p['name'] }}</a></h3>
+    <p class="muted">{{ p['tagline'] }}</p>
+    <div class="card-foot">
+      <strong class="price">{{ p['price_cents'] | money }}</strong>
+      <form method="post" action="{{ url_for('carrito_agregar') }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="hidden" name="product_id" value="{{ p['id'] }}">
+        <input type="hidden" name="next" value="{{ request.full_path.rstrip('?') }}">
+        <button class="btn btn-sm" type="submit">Agregar</button>
+      </form>
+    </div>
+  </div>
+</article>

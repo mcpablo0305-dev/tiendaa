@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Crear cuenta' if mode == 'registro' else 'Iniciar sesión' }} · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap">
+    <div class="auth">
+      <h1>{{ 'Crea tu cuenta' if mode == 'registro' else 'Bienvenido de nuevo' }}</h1>
+      <p class="muted">{{ 'Guarda tus pedidos y paga más rápido.' if mode == 'registro' else 'Inicia sesión para ver tus pedidos.' }}</p>
+      <form method="post" class="form">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        {% if mode == 'registro' %}
+          <label>Nombre<input name="name" required autocomplete="name"></label>
+        {% endif %}
+        <label>Correo<input type="email" name="email" required autocomplete="email"></label>
+        <label>Contraseña<input type="password" name="password" required minlength="{{ 8 if mode == 'registro' else 1 }}" autocomplete="{{ 'new-password' if mode == 'registro' else 'current-password' }}"></label>
+        {% if mode == 'registro' %}<span class="muted small">Mínimo 8 caracteres.</span>{% endif %}
+        <button class="btn btn-block" type="submit">{{ 'Crear cuenta' if mode == 'registro' else 'Entrar' }}</button>
+      </form>
+      <p class="small">
+        {% if mode == 'registro' %}
+          ¿Ya tienes cuenta? <a href="{{ url_for('login', next=request.args.get('next')) }}">Inicia sesión</a>
+        {% else %}
+          ¿Eres nuevo? <a href="{{ url_for('registro', next=request.args.get('next')) }}">Crea tu cuenta</a>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

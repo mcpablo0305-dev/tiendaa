@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="wrap narrow center">
+    <h1 class="page-title">{{ code }}</h1>
+    <p class="lead dark">{{ msg }}</p>
+    <a class="btn" href="{{ url_for('index') }}">Volver al inicio</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Tienda · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="wrap">
+    <h1 class="page-title">Tienda</h1>
+    <div class="chips">
+      <a class="chip {{ 'on' if not active }}" href="{{ url_for('tienda') }}">Todo</a>
+      {% for c in cats %}
+        <a class="chip {{ 'on' if c == active }}" href="{{ url_for('tienda', cat=c) }}">{{ c }}</a>
+      {% endfor %}
+    </div>
+    <div class="grid">
+      {% for p in products %}{% include "_card.html" %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
